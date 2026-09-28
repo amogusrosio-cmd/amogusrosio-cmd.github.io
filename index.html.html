@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Para Você</title>
+    <style>
+        .flor {
+    position: fixed;
+    width: 120px;
+    z-index: 2;
+    pointer-events: none;
+       }
+
+.flor-esq { bottom: -10px; left: -10px; }
+.flor-dir { bottom: -10px; right: -10px; transform: scaleX(-1); }
+
+@media (max-width: 500px) {
+    .flor { width: 80px; }
+       }
+
+   .estrela {
+    position: fixed;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: brilhar 1s infinite ease-in-out;
+    z-index: 0;
+    pointer-events: none;
+       }
+
+@keyframes brilhar {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 1; }
+       }
+
+        .lua {
+    position: fixed;
+    top: 6%;
+    right: 8%;
+    width: 90px;
+    height: 90px;
+    border-radius: 70%;
+    background: radial-gradient(circle at 35% 35%, #ffe4ef, #ffb3d1);
+    box-shadow: 0 0 80px 15px rgba(255, 150, 200, 0.45),
+                0 0 100px 40px rgba(255, 150, 200, 0.2);
+    z-index: 0;
+        }
+          
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+          background:
+    radial-gradient(circle at 85% 12%, rgba(255, 140, 200, 0.32), transparent 45%),
+    linear-gradient(180deg, #0c0518 0%, #1e0b3a 50%, #3a1650 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+       .container {
+    position: relative;
+    background: radial-gradient(circle at 50% 40%, #fff6dc, #ffe2a8);
+    padding: 70px 26px 32px;
+    border: 10px solid #4a2c1a;
+    border-radius: 200px 200px 14px 14px;
+    text-align: center;
+    max-width: 90%;
+    width: 400px;
+    z-index: 10;
+    transition: all 0.5s ease;
+    box-shadow: inset 0 0 40px rgba(255, 170, 60, 0.55),
+                0 0 50px rgba(255, 190, 90, 0.35),
+                0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.container::before,
+.container::after {
+    content: "";
+    position: absolute;
+    background: #4a2c1a;
+    opacity: 0.35;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.moldura-janela {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 460px;
+    max-width: 96vw;
+    transform: translate(-50%, -50%);
+    z-index: 11;
+    pointer-events: none;
+}
+
+.container::before { left: 50%; top: 0; bottom: 0; width: 5px; transform: translateX(-50%); }
+.container::after  { top: 42%; left: 0; right: 0; height: 5px; }
+
+        .foto-topo {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 18px;
+            display: block;
+            border: 4px solid #fad0c4;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .foto-topo.placeholder {
+            background: linear-gradient(135deg, #ffd1dc, #ffe8ec);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: #c2185b;
+            text-align: center;
+            padding: 5px;
+            border-style: dashed;
+        }
+
+        h1 {
+            color: #d63384;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        p {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            position: relative;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s, font-size 0.3s, padding 0.3s;
+        }
+
+        #btn-sim {
+            background-color: #28a745;
+            color: white;
+            box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+        }
+
+        #btn-sim:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+
+        #btn-nao {
+            background-color: #dc3545;
+            color: white;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .final-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .foto-final-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .foto-final {
+            width: 90px;
+            height: 90px;
+            border-radius: 14px;
+            object-fit: cover;
+            animation: pulse 1.5s infinite;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .foto-final.placeholder {
+            background: linear-gradient(135deg, #ffe8ec, #ffd1dc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #c2185b;
+            text-align: center;
+            padding: 4px;
+            border: 2px dashed #f8a5c2;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+            100% { transform: scale(1); }
+        }
+
+        
+        .particle {
+            position: absolute;
+            top: -40px;
+            width: 26px;
+            height: 26px;
+            animation: fall linear forwards;
+            z-index: 1;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .particle.placeholder {
+            border-radius: 50%;
+            background: radial-gradient(circle, #ff8fab, #ff5c8a);
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(105vh) rotate(360deg);
+            }
+        }
+.flor {
+    position: fixed;
+    z-index: 2;
+    pointer-events: none;
+    animation: balancar 6s ease-in-out infinite;
+    filter: drop-shadow(0 0 6px rgba(255, 150, 200, 0.35));
+        }
+
+@keyframes balancar {
+    0%, 100% { transform: rotate(calc(var(--giro) - 4deg)); }
+    50%      { transform: rotate(calc(var(--giro) + 4deg)); }
+        }
+
+.folha {
+    position: fixed;
+    z-index: 1;
+    pointer-events: none;
+    width: 34px;
+    height: 18px;
+    background: linear-gradient(135deg, #4c9a6a, #2a6b45);
+    border-radius: 0 100% 0 100%;
+        }
+
+.petala {
+    position: fixed;
+    top: -40px;
+    z-index: 1;
+    pointer-events: none;
+    animation: cair-petala linear forwards;
+        }
+
+@keyframes cair-petala {
+    to { transform: translate(var(--dx), 110vh) rotate(var(--rot)); }
+        }
+
+.chuva-item {
+    position: fixed;
+    top: -30px;
+    z-index: 1;
+    pointer-events: none;
+    animation: cair-petala linear forwards;
+    filter: drop-shadow(0 0 6px rgba(255, 220, 240, 0.95));
+        }
+
+.brilho-ponto {
+    background: radial-gradient(circle, #fff, rgba(255, 200, 230, 0));
+    border-radius: 50%;
+        }
+
+        .cidade {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(max(100vw, 900px), 1400px);
+    height: auto;
+    overflow: visible;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.cidade .janelas rect {
+    animation: luz-janela 5s ease-in-out infinite;
+    filter: drop-shadow(0 0 3px #ffa621);
+}
+.cidade .janelas rect:nth-child(2n) { animation-delay: -1.3s; animation-duration: 6s; }
+.cidade .janelas rect:nth-child(3n) { animation-delay: -2.7s; }
+.cidade .janelas rect:nth-child(5n) { animation-delay: -4s; animation-duration: 7.5s; }
+
+@keyframes luz-janela {
+    0%, 100% { opacity: 1; }
+    45%      { opacity: 0.75; }
+    50%      { opacity: 0.5; }
+    55%      { opacity: 0.85; }
+}
+.vagalume {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #fff7a8;
+    box-shadow: 0 0 8px 3px rgba(255, 240, 120, 0.9),
+                0 0 18px 6px rgba(255, 210, 90, 0.45);
+    z-index: 5;
+    pointer-events: none;
+    animation: voar var(--dur) ease-in-out infinite alternate,
+               piscar var(--pisca) ease-in-out infinite;
+}
+
+@keyframes voar {
+    0%   { transform: translate(0, 0); }
+    33%  { transform: translate(var(--x1), var(--y1)); }
+    66%  { transform: translate(var(--x2), var(--y2)); }
+    100% { transform: translate(var(--x3), var(--y3)); }
+}
+
+@keyframes piscar {
+    0%, 100% { opacity: 0.15; }
+    50%      { opacity: 1; }
+}
+
+#yt-player {
+    position: fixed;
+    left: -9999px;
+    top: 0;
+    width: 200px;
+    height: 200px;
+}
+
+#btn-musica {
+    position: fixed;
+    bottom: 14px;
+    left: 14px;
+    z-index: 20;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border-radius: 50%;
+    background: rgba(255, 226, 140, 0.9);
+    color: #4a2c1a;
+    font-size: 20px;
+    box-shadow: 0 0 14px rgba(255, 200, 100, 0.6);
+}
+#btn-musica.mudo { opacity: 0.45; }
+
+    </style>
+</head>
+<body>
+
+    <div id="yt-player"></div>
+<button id="btn-musica" aria-label="Pausar ou tocar a música">♪</button>
+
+    <svg class="cidade" viewBox="0 0 1200 320" aria-hidden="true">
+    <g fill="#26134a">
+        <rect x="-3000" y="240" width="7200" height="80"/>
+        <polygon points="30,240 30,200 65,168 100,200 100,240"/>
+        <polygon points="150,240 150,190 190,152 230,190 230,240"/>
+        <polygon points="330,240 330,205 370,175 410,205 410,240"/>
+        <polygon points="740,240 740,195 780,160 820,195 820,240"/>
+        <polygon points="880,240 880,205 915,178 950,205 950,240"/>
+        <polygon points="1040,240 1040,190 1085,150 1130,190 1130,240"/>
+    </g>
+
+    <g fill="#160b2e">
+        <rect x="-3000" y="262" width="7200" height="60"/>
+        <rect x="10" y="218" width="100" height="46"/>
+        <polygon points="0,218 60,176 120,218"/>
+        <rect x="170" y="150" width="44" height="114"/>
+        <polygon points="162,150 192,98 222,150"/>
+        <rect x="245" y="226" width="90" height="38"/>
+        <polygon points="235,226 290,190 345,226"/>
+        <rect x="365" y="236" width="80" height="28"/>
+        <polygon points="357,236 405,208 453,236"/>
+        <rect x="520" y="172" width="180" height="92"/>
+        <rect x="520" y="156" width="20" height="16"/>
+        <rect x="560" y="156" width="20" height="16"/>
+        <rect x="600" y="156" width="20" height="16"/>
+        <rect x="640" y="156" width="20" height="16"/>
+        <rect x="680" y="156" width="20" height="16"/>
+        <rect x="496" y="118" width="38" height="146"/>
+        <polygon points="490,118 515,70 540,118"/>
+        <rect x="686" y="108" width="38" height="156"/>
+        <polygon points="680,108 705,58 730,108"/>
+        <rect x="585" y="100" width="50" height="72"/>
+        <polygon points="578,100 610,52 642,100"/>
+        <rect x="770" y="218" width="100" height="46"/>
+        <polygon points="760,218 820,178 880,218"/>
+        <rect x="895" y="236" width="70" height="28"/>
+        <polygon points="887,236 930,208 973,236"/>
+        <rect x="995" y="168" width="38" height="96"/>
+        <polygon points="988,168 1014,122 1040,168"/>
+        <rect x="1060" y="222" width="110" height="42"/>
+        <polygon points="1050,222 1115,182 1180,222"/>
+    </g>
+
+    <g class="janelas" fill="#ffd66b">
+        <rect x="32" y="232" width="12" height="14"/>
+        <rect x="76" y="232" width="12" height="14"/>
+        <rect x="185" y="172" width="12" height="16"/>
+        <rect x="185" y="212" width="12" height="16"/>
+        <rect x="265" y="238" width="10" height="12"/>
+        <rect x="300" y="238" width="10" height="12"/>
+        <rect x="395" y="243" width="10" height="10"/>
+        <rect x="545" y="196" width="12" height="20"/>
+        <rect x="600" y="200" width="16" height="24"/>
+        <rect x="650" y="196" width="12" height="20"/>
+        <rect x="510" y="140" width="10" height="16"/>
+        <rect x="510" y="190" width="10" height="16"/>
+        <rect x="700" y="130" width="10" height="16"/>
+        <rect x="700" y="180" width="10" height="16"/>
+        <rect x="604" y="120" width="12" height="18"/>
+        <rect x="795" y="232" width="12" height="14"/>
+        <rect x="835" y="232" width="12" height="14"/>
+        <rect x="925" y="243" width="10" height="10"/>
+        <rect x="1009" y="190" width="10" height="16"/>
+        <rect x="1009" y="225" width="10" height="16"/>
+        <rect x="1085" y="236" width="12" height="14"/>
+        <rect x="1130" y="236" width="12" height="14"/>
+    </g>
+</svg>
+
+    <img src="images/flor1.png" class="flor flor-esq" alt="">
+    <img src="images/flor2.png" class="flor flor-dir" alt="">
+
+<div class="lua"></div>
+    <div class="container" id="card">
+        <div id="content">
+            
+        </div>
+    </div>
+
+    <script>
+
+        const MUSICA_LINK = "https://youtu.be/T87keTIAhVg";
+        const MUSICA_VOLUME = 40; // 0 a 100
+
+let ytPlayer = null;
+let musicaPronta = false;
+let musicaPediuPraTocar = false;
+
+function pegarIdYoutube(link) {
+    const m = link.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/);
+    return m ? m[1] : null;
+}
+
+function onYouTubeIframeAPIReady() {
+    const id = pegarIdYoutube(MUSICA_LINK);
+    if (!id) return;
+    ytPlayer = new YT.Player('yt-player', {
+        width: '200',
+        height: '200',
+        videoId: id,
+        playerVars: { loop: 1, playlist: id, controls: 0, playsinline: 1 },
+        events: {
+            onReady: () => {
+                musicaPronta = true;
+                ytPlayer.setVolume(MUSICA_VOLUME);
+                if (musicaPediuPraTocar) ytPlayer.playVideo();
+            }
+        }
+    });
+}
+
+function tocarMusica() {
+    musicaPediuPraTocar = true;
+    if (musicaPronta) ytPlayer.playVideo();
+}
+
+function alternarMusica() {
+    if (!musicaPronta) return;
+    const btn = document.getElementById('btn-musica');
+    if (ytPlayer.getPlayerState() === YT.PlayerState.PLAYING) {
+        ytPlayer.pauseVideo();
+        btn.classList.add('mudo');
+    } else {
+        ytPlayer.playVideo();
+        btn.classList.remove('mudo');
+    }
+}
+
+document.getElementById('btn-musica').addEventListener('click', alternarMusica);
+
+const tagYT = document.createElement('script');
+tagYT.src = "https://www.youtube.com/iframe_api";
+document.head.appendChild(tagYT);
+
+        let currentStep = 0;
+        let naoCliquesCelular = 0;
+
+        
+        const IMG_TOPO = "";              
+        const IMG_URSO = "";              
+        const FLORES = ["images/flor1.png", "images/flor2.png", "images/flor3.png", "images/flor4.png"];
+        const PETALAS = ["images/petala1.png", "images/petala2.png", "images/petala3.png"];     
+        const IMGS_FINAL_EXTRA = [];      
+
+        const steps = [
+            {
+                title: "Oi, meu amor",
+                text: "Preparei uma surpresa pequenininha aqui só para te lembrar o quanto você é especial pra mim. Clica no botão abaixo para continuar.",
+                buttonText: "Avançar",
+                isQuestion: false
+            },
+            {
+                title: "Declaração",
+                text: "Cada momento ao seu lado se torna o meu favorito do dia. Seu sorriso ilumina tudo e eu amo muito a nossa história.",
+                buttonText: "Continuar",
+                isQuestion: false
+            },
+            {
+                title: "Uma perguntinha...",
+                text: "Você aceita namorar comigo (ou continuar comigo para sempre)?",
+                isQuestion: true
+            }
+        ];
+
+        function imgOrPlaceholder(src, className, label) {
+            if (src) {
+                return `<img src="${src}" class="${className}" alt="${label}">`;
+            }
+            return `<div class="${className} placeholder">${label}</div>`;
+        }
+
+        function renderStep() {
+            const content = document.getElementById("content");
+            const step = steps[currentStep];
+
+            const fotoTopo = imgOrPlaceholder(IMG_TOPO, "foto-topo", "sua foto aqui");
+
+            if (!step.isQuestion) {
+                content.innerHTML = `
+                    ${fotoTopo}
+                    <h1>${step.title}</h1>
+                    <p>${step.text}</p>
+                    <button id="btn-next" style="background-color: #d63384; color: white;">${step.buttonText}</button>
+                `;
+                document.getElementById("btn-next").addEventListener("click", () => {
+                    tocarMusica();
+                    currentStep++;
+                    renderStep();
+                });
+            } else {
+                content.innerHTML = `
+                    ${fotoTopo}
+                    <h1>${step.title}</h1>
+                    <p>${step.text}</p>
+                    <div class="btn-container" id="btn-container">
+                        <button id="btn-sim">Sim!</button>
+                        <button id="btn-nao">Não</button>
+                    </div>
+                `;
+
+                const btnSim = document.getElementById("btn-sim");
+                const btnNao = document.getElementById("btn-nao");
+
+                btnSim.addEventListener("click", () => {
+                    showFinalScreen();
+                });
+
+                let tentativas = 0;
+
+            function aoTentarNao() {
+    tentativas++;
+    const tamSim = Math.min(16 + tentativas * 3, 38);
+    const tamNao = Math.max(16 - tentativas * 0.7, 10);
+
+    btnSim.style.fontSize = tamSim + 'px';
+    btnSim.style.padding = `${tamSim * 0.75}px ${tamSim * 1.6}px`;
+    btnNao.style.fontSize = tamNao + 'px';
+    btnNao.style.padding = `${tamNao * 0.75}px ${tamNao * 1.6}px`;
+
+    moveButtonRandomly(btnNao);
+}
+
+btnNao.addEventListener("pointerenter", (e) => {
+    if (e.pointerType === "mouse") aoTentarNao();
+});
+
+btnNao.addEventListener("click", (e) => {
+    e.preventDefault();
+    aoTentarNao();
+});
+                
+                    naoCliquesCelular++;
+                    if (naoCliquesCelular >= 2) {
+                        btnNao.classList.add("hidden");
+                    } else {
+                        moveButtonRandomly(btnNao);
+                    }
+                }
+            }
+
+        function moveButtonRandomly(btn) {
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth - 50);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight - 50);
+            btn.style.position = "fixed";
+            btn.style.left = `${Math.max(10, x)}px`;
+            btn.style.top = `${Math.max(10, y)}px`;
+        }
+
+        function showFinalScreen() {
+            const card = document.getElementById("card");
+
+            const urso = imgOrPlaceholder(IMG_URSO, "foto-final", "ursinho aqui");
+            const extras = IMGS_FINAL_EXTRA.map((src, i) =>
+                imgOrPlaceholder(src, "foto-final", "foto " + (i + 1))
+            ).join("");
+
+            card.innerHTML = `
+                <div class="final-screen">
+                    <div class="foto-final-container">
+                        ${urso}
+                        ${extras}
+                    </div>
+                    <h1>Ebaaaa! Sabia que ia dizer sim!</h1>
+                    <p>Você é a melhor coisa que me aconteceu. Te amo muito.</p>
+                </div>
+            `;
+            startRain();
+        }
+
+
+
+function criarEstrelas() {
+    for (let i = 0; i < 40; i++) {
+        const e = document.createElement('div');
+        e.classList.add('estrela');
+        e.style.left = Math.random() * 100 + 'vw';
+        e.style.top = Math.random() * 100 + 'vh';
+        const tamanho = Math.random() * 3 + 1;
+        e.style.width = tamanho + 'px';
+        e.style.height = tamanho + 'px';
+        e.style.animationDelay = Math.random() * 3 + 's';
+        document.body.appendChild(e);
+    }
+}
+criarEstrelas(); function montarMoldura() {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const base = Math.max(55, Math.min(105, Math.min(vw, vh) * 0.17));
+    const pontos = [];
+
+    // linha de cima (vai até 55% da largura)
+    for (let x = -10; x < vw * 0.55; x += base * 0.5) {
+        pontos.push({ x: x, y: -base * 0.25 });
+    }
+    // coluna da esquerda (vai até 45% da altura)
+    for (let y = base * 0.3; y < vh * 0.45; y += base * 0.5) {
+        pontos.push({ x: -base * 0.25, y: y });
+    }
+
+    pontos.forEach(p => {
+        const jx = p.x + (Math.random() - 0.5) * base * 0.4;
+        const jy = p.y + (Math.random() - 0.5) * base * 0.4;
+
+        // folha atrás da flor (60% de chance)
+        if (Math.random() < 0.6) {
+            const folha = document.createElement('div');
+            folha.className = 'folha';
+            folha.style.left = (jx + base * 0.3) + 'px';
+            folha.style.top = (jy + base * 0.3) + 'px';
+            folha.style.transform = `rotate(${Math.random() * 360}deg)`;
+            document.body.appendChild(folha);
+        }
+
+        const flor = document.createElement('img');
+        flor.src = FLORES[Math.floor(Math.random() * FLORES.length)];
+        flor.className = 'flor';
+        flor.alt = '';
+        flor.style.width = base * (0.7 + Math.random() * 0.6) + 'px';
+        flor.style.left = jx + 'px';
+        flor.style.top = jy + 'px';
+        flor.style.setProperty('--giro', Math.random() * 360 + 'deg');
+        flor.style.animationDelay = Math.random() * 4 + 's';
+        document.body.appendChild(flor);
+    });
+}
+
+function criarVagalumes() {
+    const r = document.getElementById('card').getBoundingClientRect();
+    const cx = r.left + r.width / 2;
+    const cy = r.top + r.height / 2;
+    const total = window.innerWidth < 500 ? 10 : 16;
+
+    for (let i = 0; i < total; i++) {
+        const v = document.createElement('div');
+        v.className = 'vagalume';
+
+        const ang = Math.random() * Math.PI * 2;
+        const rx = r.width / 2 + 20 + Math.random() * 90;
+        const ry = r.height / 2 + 20 + Math.random() * 70;
+        v.style.left = (cx + Math.cos(ang) * rx) + 'px';
+        v.style.top = (cy + Math.sin(ang) * ry) + 'px';
+
+        for (let n = 1; n <= 3; n++) {
+            v.style.setProperty('--x' + n, (Math.random() * 80 - 40) + 'px');
+            v.style.setProperty('--y' + n, (Math.random() * 80 - 40) + 'px');
+        }
+        v.style.setProperty('--dur', (Math.random() * 6 + 6) + 's');
+        v.style.setProperty('--pisca', (Math.random() * 2 + 2) + 's');
+        v.style.animationDelay = (-Math.random() * 6) + 's';
+
+        document.body.appendChild(v);
+    }
+}
+
+function chuvaDePetalas() {
+    setInterval(() => {
+        const p = document.createElement('img');
+        p.src = PETALAS[Math.floor(Math.random() * PETALAS.length)];
+        p.className = 'petala';
+        p.alt = '';
+        p.style.width = (Math.random() * 12 + 16) + 'px';
+        p.style.left = Math.random() * window.innerWidth * 0.6 + 'px';
+        p.style.setProperty('--dx', (Math.random() * 160 - 20) + 'px');
+        p.style.setProperty('--rot', (Math.random() * 720 - 360) + 'deg');
+        p.style.animationDuration = (Math.random() * 5 + 7) + 's';
+        document.body.appendChild(p);
+        p.addEventListener('animationend', () => p.remove());
+    }, 900);
+}
+
+criarEstrelas();
+montarMoldura();
+chuvaDePetalas();
+renderStep();
+criarVagalumes();
+
+    </script>
+</body>
+</html>
